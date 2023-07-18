@@ -1,5 +1,10 @@
 # BOOM SLEWING
-from openpyxl import Workbook, load_workbook
+import os
+from datetime import datetime
+from tkinter import *
+from tkinter import filedialog
+
+from openpyxl import load_workbook
 
 # le unità dalle righe 8 a 20
 u1 = ['t', 'm', 't x m²']
@@ -165,4 +170,12 @@ def crea_excel(dati):
     trav_sheet = trav_file.active # carico il foglio singolo, l'unico che è presente, TRAVELLING
     assegna_valori(dati, data)
     inserisci_dati_excel(trav_sheet, data)
-    trav_file.save('BoomSlewing_nuovo.xlsx') # salvo il nuovo file
+    data_corrente = datetime.now().strftime('%Y-%m-%d__%H-%M')
+    trav_file_name = 'BoomSlewing__' + data_corrente + '.xlsx'
+    root = Tk()  # creo la finestra principale di tkinter
+    root.withdraw()  # la nascondo
+    print('\nSelect the folder to save the Excel file.')
+    new_dir_path = filedialog.askdirectory()  # chiedo dove salvare il file
+    new_file_path = os.path.join(new_dir_path, trav_file_name)  # salvo il percorso del file
+    trav_file.save(new_file_path)  # salvataggio del file
+    print('\nThe new Travelling file was created in ' + new_dir_path)
